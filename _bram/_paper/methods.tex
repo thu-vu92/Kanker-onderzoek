@@ -1,0 +1,95 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2.54cm, top=3.54cm, right=2.54cm, bottom=2.54cm]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{listings}
+\usepackage{hyperref}
+
+%opening
+\title{Methods used}
+\author{Bram, Evgeny \& Sebastiaan}
+
+\begin{document}
+\section{Cohort bias removal}
+%
+We apply the following bias removal methods
+%
+\begin{itemize}
+\item L/S adjustment: cohort based normalisation $\rightarrow$ use RexR
+\item Combat: Bayesian based $\rightarrow$ use \href{http://www.bu.edu/jlab/wp-assets/ComBat/Abstract.html}{1ibrary} 
+\end{itemize}
+
+We apply the cohort bias removal to the measurement cohorts. These cohorts indicate measurement batches.
+%
+Arguably we have to apply the bias removal, per cohort, per phenotypical cluster, otherwise
+the applicability of the cohort bias removal hinges on the degree of stratification of the phenotypes.
+
+For the RNA expression data we perform cohort bias removal with batch wise normalisation (ComBat in future work).
+
+For the methylation data we apply quantile normalisation (functional normalisation or BEclear in future work).
+
+To identify the cohorts that needed batch correction we compare the distribution for each cohort 
+with the distribution over all the other cohorts using FDR corrected ANOVA.
+
+\begin{itemize}
+\item distribution of the log10 of the p-values, for the FDR we use the current cohort versus the rest as the label
+\item distribution of median deviation
+\item distribution of mean, max, min 
+\item distribution of correlation values between PCA1, PCA2, PCA3
+\item plots of (PCA1, PCA2, PCA3), colored by cohort.
+\end{itemize}
+%
+
+\section{Batch wise normalisation}
+%
+Location and scale adjustment (L/S):
+\begin{equation}
+\mbox{Standard}\quad \mathbf{x}^*_k= \frac{\mathbf{x}_k-\overline{\mathbf{x}}_k}{\sigma_k} + \overline{\mathbf{x}}_k,\quad \forall k\in \mathcal{C}
+\end{equation}
+\begin{equation}
+\mbox{Quantile}\quad \mathbf{x}^*_k= \frac{\mathbf{x}_k-median{(\mathbf{x}_k)}}{IQR_k} + median{(\mathbf{x}_k)},\quad \forall k\in \mathcal{C}
+\end{equation}
+%
+
+In literate this approach might be referred to as \textit{standardisation}.
+
+\section{Future work}
+\subsection{Quantile normalisation}
+%
+Quantile normalisation: \textbf{R} $\rightarrow$ Bioconductor $\rightarrow$ minfi package $\rightarrow$ preprocessQuantile
+
+\subsection{ComBat}
+%
+A type of location and scale type adjustment method
+\textbf{R} $\rightarrow$ Bioconductor $\rightarrow$ sva package $\rightarrow$ ComBat
+
+\subsection{SVA}
+%
+A type of location and scale type adjustment method
+\textbf{R} $\rightarrow$ Bioconductor $\rightarrow$ sva package $\rightarrow$ sva
+
+
+
+\subsection{BEclear}
+
+\textbf{R} $\rightarrow$ Bioconductor $\rightarrow$ BEclear package $\rightarrow$ correctBatchEffect
+
+\subsection{Functional normalisation}
+
+\textbf{R} $\rightarrow$ Bioconductor $\rightarrow$ minfi package $\rightarrow$ preprocessFunnorm
+
+Most batch correction methods reduce both the cohort bias \textbf{and} the biological variance.
+Also, they assume \textbf{similar stratifications} over the phenotypes and it assumes \textbf{unimodality}.
+
+\section{Predictive factors}
+%
+How does methylation affect the RNA expression patterns per phenotype?
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{methods}
+\end{document}
