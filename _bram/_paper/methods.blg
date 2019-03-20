@@ -3,15 +3,17 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: methods.aux
 The style file: plain.bst
 I couldn't open database file methods.bib
----line 3 of file methods.aux
+---line 27 of file methods.aux
  : \bibdata{methods
  :                 }
 I'm skipping whatever remains of this command
-I found no \citation commands---while reading file methods.aux
 I found no database files---while reading file methods.aux
+Warning--I didn't find a database entry for "Dedeurwaerder2014"
+Warning--I didn't find a database entry for "Vinuela2018"
+Warning--I didn't find a database entry for "Wang2015"
 You've used 0 entries,
             2118 wiz_defined-function locations,
-            496 strings with 3987 characters,
+            502 strings with 4059 characters,
 and the built_in function-call counts, 18 in all, are:
 = -- 0
 > -- 0
@@ -50,4 +52,4 @@ warning$ -- 0
 while$ -- 0
 width$ -- 0
 write$ -- 2
-(There were 3 error messages)
+(There were 2 error messages)
