@@ -55,7 +55,7 @@ phtype[,Tumor2 := ifelse(grepl("iv", phtype$Tumor),"stage 4",
                                        "stage 1")))]
 phtype$Tumor <- NULL
 Pheno_with_pca =  merge(phtype,PCA_components,by = "SampleID",all = F)
-Pheno_with_pca = Pheno_with_pca[-which(Pheno_with_pca$PC2>1500),]
+#Pheno_with_pca = Pheno_with_pca[-which(Pheno_with_pca$PC2>1500),]
 Pheno_with_pca[Vital%in%c("FFPE Scrolls","Recurrent Tumor"),Vital:="Primary Tumor"]
 
 ### SCATTERPLOT, Figure 2
@@ -94,7 +94,7 @@ myplots[[1]] <- make_bar("AGPRES")
 myplots[[2]] <- make_bar("COSTIM")
 myplots[[3]] <- make_bar("COINHIB")
 myplots[[4]] <- make_bar("CYTCHEM")
-pdf("test.pdf",height=8,width=15)
+pdf("C:/Users/tvu032/Desktop/Beyond_Banking/Results/test.pdf",height=8,width=15)
 multiplot(plotlist = myplots, cols=2)
 dev.off()
 
