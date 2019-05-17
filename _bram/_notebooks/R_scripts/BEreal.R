@@ -1,6 +1,17 @@
 ##### 
 # /media/koekiemonster/DATA-FAST/genetic_expression/hackathon_2/Lung/
-root_folder ="~/DATA/LungCancerResearch" 
+library("BEclear")
+library("snowfall")
+
+library("doParallel")
+#cores<-detectCores()
+#cl <- makeCluster(3, outfile="")
+#registerDoParallel(cl)
+
+
+
+print("..loading type data")
+root_folder ="~/DATA/LungCancerResearch/" 
 type_data <- read.table(paste(root_folder, "MethylationProbeTypes.csv", sep=""),
                         sep="\t", header=TRUE)
 TypeI = as.character(type_data[type_data['Infinium_Design_Type']=='I', 'IlmnID'])
@@ -8,6 +19,7 @@ TypeII = as.character(type_data[type_data['Infinium_Design_Type']=='II', 'IlmnID
 
 
 #####
+print("..loading phenodata")
 pheno_data <- read.table(paste(root_folder, "_prepped/methylation_combat_meta_small_cont.csv", sep=""),
                          sep="\t", header=TRUE)
 pheno_data <- as.data.frame(pheno_data)
@@ -37,6 +49,7 @@ batch2= as.factor(pheno2$Batch)
 sample_batch_df= pheno_data[c("Array.name", "Batch")]
 names(sample_batch_df) <- c('sample_id', 'batch_id')
 #####
+print("..loading full data")
 full_data <- read.table(paste(root_folder, "_prepped/methylation_raw_0nanmax.csv", sep=""),
                         sep="\t", 
                         header=TRUE)
@@ -54,22 +67,23 @@ full_data1 = full_data[final_TypeI,]
 full_data2 = full_data[final_TypeII,]
 #####
 rm(full_data)
-BEclear::correctBatchEffect(data = full_data1, 
-                            samples = sample_batch_df, 
-                            adjusted = 0.01,
-                            method = TRUE, 
-                            colBlockSize = 0, 
-                            rowBlockSize = 0,
-                            epochs = 5,
-                            dir = paste(root_folder, "_prepped/methylation_BEclear_noProbewiseTypeI.csv", sep=""),
-                            outputFormat = 'txt')
+print("..applying BEclear")
+#registerDoParallel(cl)
+#correctBatchEffect(data = full_data1, 
+#                            samples = sample_batch_df, 
+#                            adjusted = TRUE,
+#			    colBlockSize = 0, 
+#                            rowBlockSize = 0,
+#                            epochs = 5,
+#                            dir = paste(root_folder, "_prepped/BEclearType1", sep=""),
+#                            outputFormat = 'txt')
 
-BEclear::correctBatchEffect(data = full_data2, 
+rm(full_data1)
+correctBatchEffect(data = full_data2, 
                             samples = sample_batch_df, 
-                            adjusted = 0.01,
-                            method = TRUE, 
+                            adjusted = TRUE,
                             colBlockSize = 0, 
                             rowBlockSize = 0,
                             epochs = 5,
-                            dir = paste(root_folder, "_prepped/methylation_BEclear_noProbewiseTypeII.csv", sep=""),
+                            dir = paste(root_folder, "_prepped/BEclearType2", sep=""),
                             outputFormat = 'txt')
