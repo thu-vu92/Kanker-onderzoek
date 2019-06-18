@@ -234,6 +234,24 @@ The current implementation in R is limited to a fixed set of control probes.
 Improved Sheather Jones bandwidth for multimodal KDE with Beta values mirrored around $0$ 
 and $1$ (or without mirroring but using M-values). https://github.com/tommyod/KDEpy
 
+\section{RNA differential expression for Adenocarcinoma and Squamous cell carcinoma}
+%
+
+\section{Methylation differential expression for Adenocarcinoma and Squamous cell carcinoma}
+%
+\begin{itemize}
+ \item top RNA expressions $\rightarrow$ relevant methylation
+ \item all methylation values
+\end{itemize}
+%
+FDR-ANOVA BH procedure, MW-U and KS 
+
+\begin{itemize}
+ \item seperation scores and p-values
+ \item Wasserstein distances
+ \item fold changes
+\end{itemize}
+
 
 \section{Methylation plus RNA expression}
 %
@@ -257,15 +275,44 @@ $(1000, 60.000),(1000, 400.000) \rightarrow (1000, 460.000)$
 The most biased but biologically sensible approach is the paired combination of methylation and RNA expression data
 based on the affected genes. 
 
-\section{Gene/probe distribution comparisons per target}
+Approaches found in literature are:
+\begin{itemize}
+ \item sparse ICA
+ \item sparse CCA
+ \item sparse MFA
+ \item sparse PLS
+ \item joint-NMF: successfully used by Zhang et al. to analyse the triplet methylation, RNA expression and miRNA expression.
+\end{itemize}
 %
-targets are: cancer type, healthy/cancerous tissue, survived/diseased, etc.
+We can apply these methods on reduced sets, the problem is then a poor interpretability of the pairs.
 
+A reference approach could be:
+(1) iteratively build a sparse adjacency matrix with a correlation threshold OR reduce each set individually and then combine bi-linearly
+(2) extract graph clusters using sparse affinity propagation OR apply dimension reduction
+(3) identify the most important differential pairs
+%
+
+Interesting multi-omics are: (CNV, mutation, RNA expression), (miRNA, methylation, RNA expression) and just (methylation, RNA expression).
+As methylation and RNA expression sets are by far the largest sets we will focus on these first. 
+%
 \section{Suggestions}
 
+To detect cohort-bias:
 \begin{itemize}
  \item Create ghost batches that are copies of current batches with white noise added
  \item Create ghost batches that are copies of current batches with a bias term added
+\end{itemize}
+%
+For correction: 
+\begin{itemize}
+ \item transform to M-values
+ \item separate the datasets by target values before bias correction
+\end{itemize}
+%
+To mitigate probewise methylation bias:
+\begin{itemize}
+ \item treat the type I/II green/red probes seperately $rightarrow$ splits the methylation data in three data sets
+ \item apply cohort bias correction
 \end{itemize}
 %
 \bibliographystyle{plain}
